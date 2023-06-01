@@ -1,6 +1,6 @@
 # Docker Basics
 We'll first review some of the most basic concepts and slowly move to more advanced concepts. We'll start by defining a typical Docker workflow and start packaging a source code into an image, push it to the Docker Hub, pull it again, and run it as a container. We'll then continue the whole declarative deployment concepts and how to run multi-container applications using docker-compose. We'll finish up the basics by introducing Docker Swarm. 
-### Docker workflow
+## Docker workflow
 
 Docker is a way to package an application and all their dependencies into one isolated environment. There are a few steps in running a containerized application: 
 
@@ -11,7 +11,7 @@ as docker hub.
 The above two steps would require running a few commands. For the first part, packaging the source code into a docker image, we would have to create the Dockerfile first with all
 the required steps. We'll come back to it later, but for now let's go back to basics.
 
-### What is Docker? 
+## What is Docker? 
 Docker is an open-source platform that allows packaging an application into a lightweight, isolated environment, called container. So, containers are units that encapsulate the whole application like, its dependencies and necessary runtime environment. Using containers, we can run a whole application across multiple computing environment. Here are a few advantages from a Data Engineering perspective:
 
 - **Consistency -** You can package your data engineering applications with all their depencencies and configuration into a container. This ensures to reproduce the same results across all development stages. 
@@ -23,7 +23,7 @@ container and run it on any infrastructure that supports Docker, whether in clou
 
 - **DevOps and CI/CD processes -** Docker plays a crucial role in DevOps modern practices. A Docker image can be used as an Artifact within a CI/CD proceses, that ensures consistent and reproducible builds, testing and deployment.
 
-### Building on the first workflow
+## Building on the first workflow
 
 - The first step would be to package the source code into a Docker Image and push it into a Docker registry. In order to do this, we would need to create a Dockerfile and specify a set of build instructions. It's a set of instructions for Docker to build the application and its dependencies into a container image. 
 
@@ -39,20 +39,20 @@ container and run it on any infrastructure that supports Docker, whether in clou
 
 - See the list of all running and stopped containers by running ```docker container rm web``` command.
 
-### Multi-container applications with Docker
+## Multi-container applications with Docker
 Microservices architecture is a style where applications are built as a collection of small, loosely-coupled microservices. Each microservice can be responsible for a part of the bussiness logic and can be developed, deployed and scaled independently.  
 
-### Declarative deploymeny 
+## Declarative deploymeny 
 This term refers to the practice of defining the final state of your infrastructure or application using a declarative configuration file, typically in a YAML file. This approach focuses on describing the final state, rather than providing details on every required step to reach that final state. 
 
-### Docker Compose
+## Docker Compose
 Docker-compose allows you to manage and define your multi-container applications using a declarative approach in a YAML file. This file describes services, networks, volumes and configurations of your applications in a single docker-compose.yaml file. For example, an application might need a web server and a database; we can define both these components in a yaml file and run the whole application using a single docker compose command. 
 
 - Using the ```docker-compose.yaml``` we won't need to use the docker commands manually to build or pull or run docker images. We will define the final state of what's required and everything else gets taken care of under the hood. 
 
 - This is a better practice to document and keep track of containers running in a multi-container applications.
 
-### Docker Swarm 
+## Docker Swarm 
 Docker Swarm is a native clusteing and orchestration solution provided by Docker; it allows you to create and manage a swarm of Docker nodes and join them into a unified docker engine. 
 
 - In a Docker swarm, there are two types of Docker nodes, the worker node, and the manager node. The manager node is responsible for managing the cluster and coordinating the activities of the worker nodes; the worker nodes however, are responsible for the actual execution of containers. 
