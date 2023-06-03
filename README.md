@@ -72,3 +72,16 @@ Within the ```-c docker-compose.yaml``` file under the swarm-stack folder, we ha
 - Once the swarm stack is created, check it and the running services using the ```docker stack ls``` command. Use the ```docker stack services counter``` command to get more details on each service within the stack. 
 
 - We can modify the number of replicas and run the docker stack command again; the stack gets updated. Run the ```stack ps counter``` command to get more details on all the replicas. 
+
+# Docker Deep Dive 
+In this section we go through the same concepts, but will dive a lot deeper. 
+## What is an image? 
+A docker image is a lightweight, standalone, executable package that includes everything required to run a piece of software, including the code, runtime and libraries. It's built from a set of instructions specified in the Dockerfile. A docker image consists of multiple layers stacked on top of each other each representing an instruction mentioned in the Dockerfile, such as installing a software or copy a file. These layers will create a single, immutable and portable file that can run on any machine that has Docker installed in it. it provides a consistent and reproducible environment, ensuring that the application behaves the same way in any environment (dev, test, qa and prod).
+
+Images are usually stored in a remote registry, like Docker Hub. We can pull an image and run it locally as a container. When pulling the image, the whole image is pulled as a number of independent layers stacked on top of each other, and not as a single blob or object. We can see  those layers in our terminal when being pulled. Here's model details on each of those layers. 
+
+### Manifest file
+It is a JSON file that serves as the bluprint for the image providing information about each layer size, digest, and configurations. The goal of the manifest file is to provide a unified view of the image, ragardless of the platform on which it's running on. It maintains the loosely coupling of each layer and their ordering allowing Docker to reconstruct the image properly. 
+
+### Base Layer
+In Docker, the base image is the bottom-most layer and the foundation on which every other layer gets built on. It provides a basic operating system environment along with packages and softwares required to build an application. The base image is specified through the FROM instruction in the Dockerfile, like ```FROM ubuntu:latest```. 
