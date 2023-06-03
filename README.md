@@ -85,3 +85,15 @@ It is a JSON file that serves as the bluprint for the image providing informatio
 
 ### Base Layer
 In Docker, the base image is the bottom-most layer and the foundation on which every other layer gets built on. It provides a basic operating system environment along with packages and softwares required to build an application. The base image is specified through the FROM instruction in the Dockerfile, like ```FROM ubuntu:latest```. 
+
+### What is a containers? 
+A few important concepts before defining containers: 
+
+- **kernel -** In an operating system, the kernel is the central component that acts as a bridge between applications and the underlying hardware. It is a critical part of the operating system responsible for managing system resources, providing essential services, and facilitating communication between software and hardware components.
+
+- **Namespace -** Namespacing refers to the process of isolating resources within a system and allocating that portion of the resource to a specific program. The Kernel is then responsible for managing and orchestrating the incoming requests from the softwares by redirectign them to the correct namespace. So, namespacing refers to the isolations of resources per processs or group of processes. On a simlilar topic, a control group is a way to limit the amount of resources for a process or group of proceses. 
+
+- **Container -** Given the above definitions, a container is a specific process/software plus its dedicated namespace. The two will form a container. So, a Docker container can be thought of as a process or a grouping of processes that have their own resources assinged to it. So, when we run an image as a docker container, the Kernel will dedicate a portion of the hard drive resources to that container and install the required software and dependencies inside that segment; once that's done, it'll run the required commands mentioned in the image and creates the required processes; for example, that command could be to run an application on those resources.
+
+- **Docker running on a non-linux OS**
+Namespacing and control groups that we discussed above are concepts available in Linux; if that's the case, how can we run a Docker container on a Windows machine, for example? When we installed Docker for Windows, we also installed a linux-based virtual machine. When we run an instance of the image to create a container, the Linux kerner will dedicated the required resource from the computer's hardware and create an isolated namespace; it'll then pick up the required commands from the image and run the required processes on that namespace to create the whole container. 
