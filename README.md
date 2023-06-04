@@ -86,7 +86,7 @@ It is a JSON file that serves as the bluprint for the image providing informatio
 ### Base Layer
 In Docker, the base image is the bottom-most layer and the foundation on which every other layer gets built on. It provides a basic operating system environment along with packages and softwares required to build an application. The base image is specified through the FROM instruction in the Dockerfile, like ```FROM ubuntu:latest```. An example of a base image is BusyBox. You can pull that image and run it as a container locally by running ```docker run -it --rm busybox```; -it stands for interactivelly, meaning that we'll be able to access the container in the terminal; --rm will delete the container once it's been stopped. When the busybox container running, we can run ```ls``` or ```echo``` commands on it; this is because these commands are available within the containers file system.
 
-### What is a containers? 
+## What is a containers? 
 A few important concepts before defining containers:
 
 - **kernel -** In an operating system, the kernel is the central component that acts as a bridge between applications and the underlying hardware. It is a critical part of the operating system responsible for managing system resources, providing essential services, and facilitating communication between software and hardware components.
@@ -98,6 +98,6 @@ A few important concepts before defining containers:
 - **Docker running on a non-linux OS**
 Namespacing and control groups that we discussed above are concepts available in Linux; if that's the case, how can we run a Docker container on a Windows machine, for example? When we installed Docker for Windows, we also installed a linux-based virtual machine. When we run an instance of the image to create a container, the Linux kerner will dedicated the required resource from the computer's hardware and create an isolated namespace; it'll then pick up the required commands from the image and run the required processes on that namespace to create the whole container. 
 
-### Docker CLI
+## Docker CLI
 Here's a quick review of some of the useful Docker CLI commands:
 - **```Docker logs <container_id>``` -** Use this to inspect everything that gets emmited from a container. You can use logs for debugging issues and investingating why the container is not behaving as it should. Logs can also be useful within CI/CD workflows. 
