@@ -100,4 +100,4 @@ Namespacing and control groups that we discussed above are concepts available in
 
 ### Docker CLI
 Here's a quick review of some of the useful Docker CLI commands:
-- **Docker logs <container_id> -** Use this to inspect everything that gets emmited from a container. You can use logs for debugging issues and investingating why the container is not behaving as it should. Logs can also be useful within CI/CD workflows. 
+- **```Docker logs <container_id>``` -** Use this to inspect everything that gets emmited from a container. You can use logs for debugging issues and investingating why the container is not behaving as it should. Logs can also be useful within CI/CD workflows. 
