@@ -83,9 +83,6 @@ Images are usually stored in a remote registry, like Docker Hub. We can pull an 
 ### Manifest file
 It is a JSON file that serves as the bluprint for the image providing information about each layer size, digest, and configurations. The goal of the manifest file is to provide a unified view of the image, ragardless of the platform on which it's running on. It maintains the loosely coupling of each layer and their ordering allowing Docker to reconstruct the image properly. 
 
-### Base Layer
-In Docker, the base image is the bottom-most layer and the foundation on which every other layer gets built on. It provides a basic operating system environment along with packages and softwares required to build an application. The base image is specified through the FROM instruction in the Dockerfile, like ```FROM ubuntu:latest```. An example of a base image is BusyBox. You can pull that image and run it as a container locally by running ```docker run -it --rm busybox```; -it stands for interactivelly, meaning that we'll be able to access the container in the terminal; --rm will delete the container once it's been stopped. When the busybox container running, we can run ```ls``` or ```echo``` commands on it; this is because these commands are available within the containers file system.
-
 ## What is a containers? 
 A few important concepts before defining containers:
 
@@ -101,3 +98,16 @@ Namespacing and control groups that we discussed above are concepts available in
 ## Docker CLI
 Here's a quick review of some of the useful Docker CLI commands:
 - **```Docker logs <container_id>``` -** Use this to inspect everything that gets emmited from a container. You can use logs for debugging issues and investingating why the container is not behaving as it should. Logs can also be useful within CI/CD workflows. 
+- **```Docker stop and Docker kill``` -** In Docker, both docker stop and docker kill are commands used to stop running container. Docker stop sends a SIGTERM signal to the container, which instructs the main process inside the container to gracefully stop and exit. If the container doesn't stop within the timeout period, Docker proceeds to send a *SIGKILL* signal. ```Docker kill``` sends a *SIGKILL* signal to the container, which immediately terminates the container without giving it a chance to perform any cleanup tasks or save its state.
+
+## Building an image
+We will provide a set of instructions on a Dockerfile and build the image out of it. The Dockerfile includes instructions to copy files from your local filesystem into the Docker image, set environment variables, install dependencies, run commands during the build process, and define the command that should be executed when the container based on the image is run. In short, the dockerfile contains the following 3 steps: 
+- Create a base image
+- Run commands to install additional programs
+- Specify a command to run on container startup
+
+### Base Layer
+In Docker, the base image is the bottom-most layer and the foundation on which every other layer gets built on. It provides a basic operating system environment along with packages and softwares required to build an application. The base image is specified through the FROM instruction in the Dockerfile, like ```FROM ubuntu:latest```. An example of a base image is BusyBox. You can pull that image and run it as a container locally by running ```docker run -it --rm busybox```; -it stands for interactivelly, meaning that we'll be able to access the container in the terminal; --rm will delete the container once it's been stopped. When the busybox container running, we can run ```ls``` or ```echo``` commands on it; this is because these commands are available within the containers file system.
+
+### All Steps
+On each step a temporary container is build based on the previous step. It'll copy its file system and run a new command on it associated to the current step. It'll then copy the file system of the new container, take a snapshot and store it as a new image. It then shuts down the temporary container it'd created. The same process continues for the next instructions in the Dockerfile.
