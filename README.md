@@ -78,12 +78,12 @@ In this section we go through the same concepts, but will dive a lot deeper.
 ## What is an image? 
 A docker image is a lightweight, standalone, executable package that includes everything required to run a piece of software, including the code, runtime and libraries. It's built from a set of instructions specified in the Dockerfile. A docker image consists of multiple layers stacked on top of each other each representing an instruction mentioned in the Dockerfile, such as installing a software or copy a file. These layers will create a single, immutable and portable file that can run on any machine that has Docker installed in it. it provides a consistent and reproducible environment, ensuring that the application behaves the same way in any environment (dev, test, qa and prod).
 
-Images are usually stored in a remote registry, like Docker Hub. We can pull an image and run it locally as a container. When pulling the image, the whole image is pulled as a number of independent layers stacked on top of each other, and not as a single blob or object. We can see  those layers in our terminal when being pulled. Here's model details on each of those layers. 
+Images are usually stored in a remote registry, like Docker Hub. We can pull an image and run it locally as a container. When pulling the image, the whole image is pulled as a number of independent layers stacked on top of each other, and not as a single blob or object. We can see  those layers in our terminal when being pulled. Here's model details on each of those layers.
 
 ### Manifest file
-It is a JSON file that serves as the bluprint for the image providing information about each layer size, digest, and configurations. The goal of the manifest file is to provide a unified view of the image, ragardless of the platform on which it's running on. It maintains the loosely coupling of each layer and their ordering allowing Docker to reconstruct the image properly. 
+It is a JSON file that serves as the bluprint for the image providing information about each layer size, digest, and configurations. The goal of the manifest file is to provide a unified view of the image, ragardless of the platform on which it's running on. It maintains the loosely coupling of each layer and their ordering allowing Docker to reconstruct the image properly.
 
-## What is a containers? 
+## What is a containers?
 A few important concepts before defining containers:
 
 - **kernel -** In an operating system, the kernel is the central component that acts as a bridge between applications and the underlying hardware. It is a critical part of the operating system responsible for managing system resources, providing essential services, and facilitating communication between software and hardware components.
@@ -101,7 +101,7 @@ Here's a quick review of some of the useful Docker CLI commands:
 - **```Docker stop and Docker kill``` -** In Docker, both docker stop and docker kill are commands used to stop running container. Docker stop sends a SIGTERM signal to the container, which instructs the main process inside the container to gracefully stop and exit. If the container doesn't stop within the timeout period, Docker proceeds to send a *SIGKILL* signal. ```Docker kill``` sends a *SIGKILL* signal to the container, which immediately terminates the container without giving it a chance to perform any cleanup tasks or save its state.
 
 ## Building an image
-We will provide a set of instructions on a Dockerfile and build the image out of it. The Dockerfile includes instructions to copy files from your local filesystem into the Docker image, set environment variables, install dependencies, run commands during the build process, and define the command that should be executed when the container based on the image is run. In short, the dockerfile contains the following 3 steps: 
+We will provide a set of instructions on a Dockerfile and build the image out of it. The Dockerfile includes instructions to copy files from your local filesystem into the Docker image, set environment variables, install dependencies, run commands during the build process, and define the command that should be executed when the container based on the image is run. In short, the dockerfile contains the following 3 steps:
 - Create a base image
 - Run commands to install additional programs
 - Specify a command to run on container startup
@@ -109,5 +109,35 @@ We will provide a set of instructions on a Dockerfile and build the image out of
 ### Base Layer
 In Docker, the base image is the bottom-most layer and the foundation on which every other layer gets built on. It provides a basic operating system environment along with packages and softwares required to build an application. The base image is specified through the FROM instruction in the Dockerfile, like ```FROM ubuntu:latest```. An example of a base image is BusyBox. You can pull that image and run it as a container locally by running ```docker run -it --rm busybox```; -it stands for interactivelly, meaning that we'll be able to access the container in the terminal; --rm will delete the container once it's been stopped. When the busybox container running, we can run ```ls``` or ```echo``` commands on it; this is because these commands are available within the containers file system.
 
-### All Steps
+### All Steps in building an image
 On each step a temporary container is build based on the previous step. It'll copy its file system and run a new command on it associated to the current step. It'll then copy the file system of the new container, take a snapshot and store it as a new image. It then shuts down the temporary container it'd created. The same process continues for the next instructions in the Dockerfile.
+
+## Simple project
+Under the simple-web folder, we'll create the required files to run a node.js application. ```package.json``` file, which is used in Node.js projects to define project metadata, manage dependencies, and specify scripts for various tasks; there are two main sections: 
+    - **depencencies -** In this case, the only dependency mentioned is "express" with a wildcard version (*), which means it will install the latest available version of the Express framework. Express is a popular web framework for Node.js used for building web applications and APIs. When you run the application, Node.js will automatically read this section and install the specified dependencies using a package manager like npm (Node Package Manager) or yarn. 
+    - **Scripts -** This section allows you to define custom scripts to execute various tasks related to your application. In this case, there is a "start" script defined, which specifies that when you run the command npm start or yarn start, it should execute the command node index.js. This script is typically used to start the application.
+
+### Dockerfile instructions for Simple App
+In order to get the container up & running, we need to build an image, for which we require a Dockerfile. Within this docker file we need to specify the following:
+- Specify the base image using the ```FROM``` command: We need to  sure the base image we're choosing is compatible with the commands we'll run in the next instructions. In this case we choose node:14-alpine (the word alpine referes to the most basis and lightweight version of the node image).
+- Copy the required files using the ```COPY``` command: We will have to copy the package.json and and index.js files into the namespace of the container (notice that the container will run on a small segment of the hard drive, which is isolated and is not aware of the local files). It's best practice to not copy the files in the root directory of the container's filesystem; use the ```WORKFIR``` instructions in the Dockerfile and specify the initial working directory before the ```COPY``` command. 
+- Install the dependencies using the ```RUN``` command: we will install the dependencies using npm.
+- Specify the command using the ```CMD``` command: This will be command that will run when the container is starting.
+
+### Running Simple App as a container
+In order to build the above image, run the ```docker build -t moeint/simple-web:first-ctr .``` command. Once the image is built, run it using the ```docker run moeint/simple-web:first-ctr``` command. Once it's run, use the ```docker exec -it <name_or_id_of_the_container> sh``` command to get inside the container and verify the existence of the files. 
+
+### Running the Simple App on the browser 
+In order to be able to see the app up & running in our browser, we will have to make a request to the local host network through the ```http://localhost:8080/``` url. However, this is not enough to connect to the container; by default, no incoming traffic to the local host gets routed to the container's network. The container has its onw isolated network with a range of available ports. In order to make sure that any incoming request gets routed to the container's network, we will have to set up an explicit port mapping. Port mapping means that anytime a machine makes a request to our local network, that request should automatically be forwarded to the container's network. In order to implement port mapping and forward the incoming traffic to the container, we need to modify the Docker run command to ```docker run -p 5000:8080 <image_id>```. This command says that any incoming request to our local's network on port 5000, should be automatically forwarded to port 8080 inside the container. **We need to make sure in the source code that the application running inside that container is also listening on port 8080.**
+
+## Visits App
+In this new simple application, we'll increment the number of times the page has been visited. In order to do this, we'll add an additional Redis container as a database to hold the number of visits. So, we'll have a node.js application running on one container, and a Redis server running on a separate container. To implement this we'll use Docker Compose. 
+
+### Docker Compose
+See the above sections for an introduction to Docker Compose. In order for the Redis database to be able to store information, number of visits in this case, we need to make sure the two containers can communicate with each other; so, we need to set up a networking infrastructure between 
+the two containers. Docker Compose is beneficial to start multiple Docker containers at the same time and connect them together in an automated and declarative fashion. Here are the steps: 
+- Start by providing the docker compose version: ```version: '3'```
+- provide all services within your multi-container applications: ```services:```
+- Under the services section, choose the images you'd like to run, or declare the ones you'd like to build using the ```build``` command. See the docker-compose.yaml file for more information. 
+
+ 
