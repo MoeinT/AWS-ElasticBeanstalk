@@ -158,7 +158,7 @@ Here we take advantage of node.js to get a custom project to start testing and p
 We'll start by running the application in the Dev environment. For that, we've set up a docker-compose.yml file. There's a separate Dockerfile.dev file that build the required image for the dev environment. Once the application is running within the Dev environment, we'll test it using the ```npm run test``` command.
 
 #### Tests
-If you'd like to run any command on the running container, you need to specify it within the docker run command. For testing the react.js application, we can use the ```docker run -it -p 3000:3000 <image_id> npm run test``` command. This will run the tests on the running container. Another approach would be to use the ```docker exec -it <image_it> npm run test``` command and run the tests inside the container.
+If you'd like to run any command on the running container, you need to specify it within the docker run command. For testing the react.js application, we can use the ```docker run -it <image_id> npm run test``` command. This will run the tests on the running container. Another approach would be to use the ```docker exec -it <image_it> npm run test``` command and run the tests inside the container. You can apply the ```npm run test``` command once you're inside the container.
 
 #### Production 
 We'll define a separate Dockerfile to create a production version of the Docker container in dev. For this we'll need a server that's more suitable for running production-level application. 
