@@ -1,4 +1,4 @@
-name: Test React
+name: react-appdev
 on:
   push:
     branches:
@@ -17,6 +17,22 @@ jobs:
       - name: Login to Dockerhub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build image
-        run: docker build -t moient/react-test -f Dockerfile.dev .
+        run: docker build -t moient/react-appdev -f Dockerfile.dev .
       - name: Run tests
-        run: docker run -e CI=true moient/react-test npm test
+        run: docker run -e CI=true moient/react-appdev npm test
+
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+ 
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: reacy-app
+          environment_name: Reacy-app-env
+          existing_bucket_name: elasticbeanstalk-us-east-1-651778762109
+          region: us-east-1
+          version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
