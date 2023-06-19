@@ -124,6 +124,8 @@ In order to get the container up & running, we need to build an image, for which
 - Install the dependencies using the ```RUN``` command: we will install the dependencies using npm.
 - Specify the command using the ```CMD``` command: This will be command that will run when the container is starting.
 
+**Docker volumes** When making a change to the source code in the local machine, this change is not going to be automatically projected into the container's filesystem, so we might have to rebuild the whole image from scratch. In order to solve this problem, we can take advantage of what is known as Docker volumes. Using this approach, instead of a full copy, we'll provide a reference to the filesystem at the source. 
+
 ### Running Simple App as a container
 In order to build the above image, run the ```docker build -t moeint/simple-web:first-ctr .``` command. Once the image is built, run it using the ```docker run moeint/simple-web:first-ctr``` command. Once it's run, use the ```docker exec -it <name_or_id_of_the_container> sh``` command to get inside the container and verify the existence of the files. 
 
@@ -140,4 +142,35 @@ the two containers. Docker Compose is beneficial to start multiple Docker contai
 - provide all services within your multi-container applications: ```services:```
 - Under the services section, choose the images you'd like to run, or declare the ones you'd like to build using the ```build``` command. See the docker-compose.yaml file for more information. 
 
- 
+### Restart policies on docker-compose
+Here are the different policies on how to restart a container in case it stops or crashes: 
+- No: Never attemp to restart the container if it stops or crashes
+- Always: If this container stops for any reason, always attemp to restart it.
+- On-failure: Only restart if the container stops with an error code
+- Unless-stopped: Always restart unless we forcibly stop it. 
+
+## React Project
+Here we take advantage of node.js to get a custom project to start testing and playing around with Docker. The project is under the frontend folder. Within this folder, we can test the application by running ```npm run test``` commad, run it in the development environment using ```npm run start```, and finally ```npm run build``` for production. We'll use docker to run the application in both dev and prod environments; for this, we'll create two dockerfiles, Dockerfile.dev and Dockerfile to build the docker images to run in dev and prod environments, respectively.
+
+**Note -** In order to take advantege of Docker volumes and project changes in the source code to the application real time, run this command: ```docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app <image_id>```; pwd refers to the current working directory; won't work on windows; use the whole path instead. If we take advantage of Docker volumes, we won't have to copy every single file from the local machine to the container's filesystem.
+
+### Workflow for the React App
+We'll start by running the application in the Dev environment. For that, we've set up a docker-compose.yml file. There's a separate Dockerfile.dev file that build the required image for the dev environment. Once the application is running within the Dev environment, we'll test it using the ```npm run test``` command.
+
+#### Tests
+If you'd like to run any command on the running container, you need to specify it within the docker run command. For testing the react.js application, we can use the ```docker run -it -p 3000:3000 <image_id> npm run test``` command. This will run the tests on the running container. Another approach would be to use the ```docker exec -it <image_it> npm run test``` command and run the tests inside the container.
+
+#### Production 
+We'll define a separate Dockerfile to create a production version of the Docker container in dev. For this we'll need a server that's more suitable for running production-level application. 
+
+#### Nginx
+When there are multiple environments for running our applications, we need to make sure the incoming traffic gets routed to the right one; i.e., the application for the dev environment is hosted on a different container than the one in the production environment. When we make a request to our browser, we need to make sure the incoming request/traffic gets routed to the right container. So, Nginx acts as a load balancer that can distribute the incoming traffic across multiple containers. 
+
+#### Dockerfile for production
+The Dockerfile to build the image required to build the application in production has two steps: 
+- **build:** Build the production-level application using the ```npm run build``` command. For this step we'll use the same base image as we used for the development environment.  
+- **Run:** Once the build process is finished, we'll need to run the production application; we'll do so using the Nginx base image and copy the ```build``` folder, which contains a number of static fiels, from the first step into the second ngix file system.
+
+**Note -** The Ngix image listens on port 80; make sure to check out the documentation and specify the right port mapping when using a new base image.
+
+### Continuous Integration and Delivery
