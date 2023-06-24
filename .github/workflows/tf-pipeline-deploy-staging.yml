@@ -37,4 +37,4 @@ jobs:
       env:
         TF_VAR_access_key:         ${{ secrets.AWS_ACCESS_KEY }}
         TF_VAR_secret_key:         ${{ secrets.AWS_SECRET_KEY }}
-      run: terraform apply -auto-approve -var-file env/staging.tfvars
+      run: terraform apply -auto-approve -var="env=dev"
