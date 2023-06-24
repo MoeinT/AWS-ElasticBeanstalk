@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - feat/feat_dockeractions
-    paths:
-    - '**.frontend'
  
 jobs:
   docker-build:
