@@ -35,5 +35,5 @@ jobs:
           environment_name: Docker-test-env
           existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
           region: eu-west-3
-          version_label: "Sample"
+          version_label: ${{ github.sha }}
           deployment_package: deploy.zip
