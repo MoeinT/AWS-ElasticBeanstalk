@@ -174,3 +174,7 @@ The Dockerfile to build the image required to build the application in productio
 **Note -** The Ngix image listens on port 80; make sure to check out the documentation and specify the right port mapping when using a new base image.
 
 ### Continuous Integration and Delivery
+Under the ```.github/workflows``` folder, we've created a workflow that runs on whenever there's a push to remote. It contains the following steps: 
+    - Logs in to Dockerhub 
+    - Creates an image based on ```Dockerfile.dev```
+    - Runs the ```.npm run test``` command on the running image.   
