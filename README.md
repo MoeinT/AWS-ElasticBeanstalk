@@ -173,8 +173,15 @@ The Dockerfile to build the image required to build the application in productio
 
 **Note -** The Ngix image listens on port 80; make sure to check out the documentation and specify the right port mapping when using a new base image.
 
+#### Elastic Beanstalk  
+In this section we'll provide a few details on benefits and added values of Running an application on AWS Elastic Beanstalk. EBS is a service for deploying and scaling web applications developed with Java, .NET, PHP, Node.js, Python, Ruby, Go, or Docker without having to carry out any operation burden of managing infrastructure. Here's how EBS manages the scaling of our applications: 
+
+#### Scaling an application with Elastic Beanstalk
+So, when users open up their web browsers and attempt to navigate to the application running on AWS, their request will be handled by a load balancer that has already been created as a part of the Elastic Beanstalk application. When a request comes into it, the load balancer will route those requests to a virtual machine that is running docker, and on which our Docker container is running The benefit to Elastic Beanstalk is that it monitors the amount of traffic that's coming in to our virtual machine right here, and as soon as that traffic reaches a certain threshold, Elastic Beanstalk is going to automatically add in additional virtual machines to handle that traffic. So, as soon as a request comes in, it's gonna go to the load balancer. The load balancer is gonna find the node with the least amount of traffic and it will route that request to that particular virtual machine. The application, running inside of the docker container, will then respond to that request and the user will eventually get the file that they were looking for.
+
 ### Continuous Integration and Delivery
 Under the ```.github/workflows``` folder, we've created a workflow that runs on whenever there's a push to remote. It contains the following steps: 
     - Logs in to Dockerhub 
     - Creates an image based on ```Dockerfile.dev```
     - Runs the ```.npm run test``` command on the running image.   
+    - Once all the above steps have run successfully, we'll go ahead and deploy the app to [AWS Elastic Beanstalk](https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/aws-elastic-beanstalk.html). So, whenever this step of the workflow is triggered, Github Actions will put all the source codes into a zip file and deploys that into a S3 Bucket, which is then accessed by EBS to run the application. 
