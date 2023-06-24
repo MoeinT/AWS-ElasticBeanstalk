@@ -11,8 +11,8 @@ jobs:
       run:
         shell: bash
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
       # - name: Login to Dockerhub
       #   run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       # - name: Build image
