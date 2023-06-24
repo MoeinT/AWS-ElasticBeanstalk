@@ -178,3 +178,4 @@ Under the ```.github/workflows``` folder, we've created a workflow that runs on 
     - Logs in to Dockerhub 
     - Creates an image based on ```Dockerfile.dev```
     - Runs the ```.npm run test``` command on the running image.   
+    - Once all the above steps have run successfully, we'll go ahead and deploy the app to [AWS Elastic Beanstalk](https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/aws-elastic-beanstalk.html). 
