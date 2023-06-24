@@ -1,5 +1,5 @@
 # Creating a role for the AWS Elastic Beanstalk environment
-module "Role" {
+/* module "Role" {
   source = "../../modules/Role"
   auth   = local.auth
   roles = {
@@ -8,10 +8,10 @@ module "Role" {
       "assume_role_policy" = local.assume_elasticbeanstalkrole_policy
     }
   }
-}
+} */
 
 # Adding the below two policies to the above role
-module "RolePolicy" {
+/* module "RolePolicy" {
   source = "../../modules/RolePolicy"
   auth   = local.auth
   policies = {
@@ -24,4 +24,4 @@ module "RolePolicy" {
       "policy_arn" = "arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker"
     }
   }
-}
+} */
