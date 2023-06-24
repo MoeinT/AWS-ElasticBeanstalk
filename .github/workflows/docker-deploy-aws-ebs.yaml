@@ -37,4 +37,3 @@ jobs:
           region: eu-west-3
           version_label: ${{ github.sha }}
           deployment_package: deploy.zip
-        
