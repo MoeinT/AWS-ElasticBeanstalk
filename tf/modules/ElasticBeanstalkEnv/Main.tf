@@ -22,6 +22,7 @@ resource "aws_elastic_beanstalk_environment" "AllEnvs" {
 
   name                = each.value.name
   application         = each.value.application
+  tier                = lookup(each.value, "tier", "WebServer")
   solution_stack_name = each.value.solution_stack_name
 
   dynamic "setting" {

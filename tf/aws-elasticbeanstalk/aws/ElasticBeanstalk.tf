@@ -16,6 +16,7 @@ module "ebsEnv" {
     "ebs" = {
       "name"                = "docker-react-env",
       "application"         = module.ebsApp.appname["docker-react"],
+      "tier"                = "WebServer",
       "solution_stack_name" = "64bit Amazon Linux 2 v3.5.8 running Docker"
       "allSettings"         = local.ebsSettings
     }
