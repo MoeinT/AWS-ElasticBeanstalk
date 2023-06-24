@@ -20,7 +20,7 @@ locals {
 }
 EOF
 
-  ebsSettings = { 
+  ebsSettings = {
     "ServiceRole" = {
       "namespace" = "aws:elasticbeanstalk:environment"
       "name"      = "ServiceRole"
