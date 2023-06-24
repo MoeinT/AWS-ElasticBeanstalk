@@ -13,14 +13,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      # - name: Login to Dockerhub
-      #   run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      # - name: Build image
-      #   working-directory: ./frontend
-      #   run: docker build -t moient/react-appdev -f Dockerfile.dev .
-      # - name: Run tests
-      #   working-directory: ./frontend
-      #   run: docker run -e CI=true moient/react-appdev npm test
+      - name: Login to Dockerhub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build image
+        working-directory: ./frontend
+        run: docker build -t moient/react-appdev -f Dockerfile.dev .
+      - name: Run tests
+        working-directory: ./frontend
+        run: docker run -e CI=true moient/react-appdev npm test
 
 
       - name: Generate deployment package
