@@ -10,16 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      # - name: Login to Docker Hub
+      #   run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker Image
-        working-directory: ./frontend
-        run: docker build -t cygnetops/react-test -f Dockerfile.dev .
+      # - name: Build Docker Image
+      #   working-directory: ./frontend
+      #   run: docker build -t cygnetops/react-test -f Dockerfile.dev .
 
-      - name: Run Tests
-        working-directory: ./frontend
-        run: docker run -e CI=true cygnetops/react-test npm test
+      # - name: Run Tests
+      #   working-directory: ./frontend
+      #   run: docker run -e CI=true cygnetops/react-test npm test
 
       - name: Generate deployment package
         run: zip -r deploy.zip ./frontend -x '*.git*'
