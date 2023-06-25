@@ -22,7 +22,7 @@ jobs:
         run: docker run -e CI=true cygnetops/react-test npm test
 
       - name: Generate deployment package
-        run: cd frontend && zip -r deploy.zip . -x '*.git*'
+        run: zip -r deploy.zip ./frontend -x '*.git*'
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
