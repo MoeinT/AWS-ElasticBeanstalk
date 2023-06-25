@@ -1,0 +1,37 @@
+name: react-appdev
+on:
+  pull_request:
+    branches:
+      - 'main'
+ 
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to Dockerhub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build image
+        run: docker build -t moient/react-appdev -f Dockerfile.dev .
+      - name: Run tests
+        run: docker run -e CI=true moient/react-appdev npm test
+
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+ 
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: test
+          environment_name: Test-env
+          existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
+          region: eu-west-3
+          version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
