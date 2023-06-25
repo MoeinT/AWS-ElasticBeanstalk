@@ -3,7 +3,7 @@ name: 'Terraform'
 on:
   push:
     branches:
-      - 'feat/feat_dockeractions'
+      - 'feat/dockerActions'
     paths:
       - '**.tf'
 

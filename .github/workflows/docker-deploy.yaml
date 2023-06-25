@@ -1,0 +1,42 @@
+name: Deploy Frontend
+on:
+  push:
+    branches:
+      - feat/dockerActions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image
+        run: docker build -t cygnetops/react-test -f Dockerfile.dev .
+
+      - name: Run Tests
+        run: docker run -e CI=true cygnetops/react-test npm test
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip ./ -x '*.git*'
+
+      - name: List files in working directory
+        run: ls -la
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: docker-react
+          environment_name: Docker-react-env
+          existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
+          region: eu-west-3
+          version_label: ${{ github.sha }}
+          deployment_package: ./frontend/deploy.zip
