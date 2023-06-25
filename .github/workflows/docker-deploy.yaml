@@ -31,16 +31,14 @@ jobs:
       - name: List files in working directory
         run: ls -la
 
-      - name: Check deploy.zip existence
-        run: ls -la ./frontend/deploy.zip
-      # - name: Deploy to EB
-      #   uses: einaregilsson/beanstalk-deploy@v18
-      #   with:
-      #     aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-      #     aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-      #     application_name: test
-      #     environment_name: Test-env
-      #     existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
-      #     region: eu-west-3
-      #     version_label: ${{ github.sha }}
-      #     deployment_package: deploy.zip
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: test
+          environment_name: Test-env
+          existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
+          region: eu-west-3
+          version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
