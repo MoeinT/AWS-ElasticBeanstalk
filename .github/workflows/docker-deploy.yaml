@@ -14,16 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      # - name: Login to Docker Hub
-      #   run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      # - name: Build Docker Image
-      #   working-directory: ./frontend
-      #   run: docker build -t cygnetops/react-test -f Dockerfile.dev .
+      - name: Build Docker Image
+        run: docker build -t cygnetops/react-test -f Dockerfile.dev .
 
-      # - name: Run Tests
-      #   working-directory: ./frontend
-      #   run: docker run -e CI=true cygnetops/react-test npm test
+      - name: Run Tests
+        run: docker run -e CI=true cygnetops/react-test npm test
 
       - name: Generate deployment package
         run: zip -r deploy.zip ./ -x '*.git*'
@@ -36,8 +34,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          application_name: test
-          environment_name: Test-env
+          application_name: docker-react
+          environment_name: Docker-react-env
           existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
           region: eu-west-3
           version_label: ${{ github.sha }}
