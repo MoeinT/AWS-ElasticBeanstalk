@@ -2,7 +2,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - feat/dockerActions
+      - main
 
 jobs:
   build:
@@ -26,16 +26,14 @@ jobs:
       - name: Generate deployment package
         run: zip -r deploy.zip ./ -x '*.git*'
 
-      - name: List files in working directory
-        run: ls -la
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          application_name: docker-react
-          environment_name: Docker-react-env
+          application_name: docker-react-tf
+          environment_name: docker-react-tf-env
           existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
           region: eu-west-3
           version_label: ${{ github.sha }}
