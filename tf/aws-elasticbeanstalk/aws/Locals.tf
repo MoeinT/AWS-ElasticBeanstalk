@@ -29,7 +29,7 @@ EOF
     "IamInstanceProfile" = {
       "namespace" = "aws:autoscaling:launchconfiguration"
       "name"      = "IamInstanceProfile"
-      "value"     = "aws-elasticbeanstalk-ec2-role"
+      "value"     = module.Role.rolename["aws-elasticbeanstalk-ec2-role"]
     },
     "Tier" = {
       "namespace" = "aws:elasticbeanstalk:environment:Process:default"

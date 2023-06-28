@@ -2,7 +2,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - feat/dockerActions
+      - main
 
 jobs:
   build:
@@ -32,8 +32,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          application_name: docker-react
-          environment_name: Docker-react-env
+          application_name: docker-react-tf
+          environment_name: docker-react-tf-env
           existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
           region: eu-west-3
           version_label: ${{ github.sha }}
