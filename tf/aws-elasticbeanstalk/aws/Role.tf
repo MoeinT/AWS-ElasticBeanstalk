@@ -16,7 +16,7 @@ module "InstanceProfile" {
   auth   = local.auth
   instanceprofiles = {
     "ebs-instanceprofile" = {
-      "name" = module.Role.rolename["aws-elasticbeanstalk-ec2-role"],
+      "name" = "aws-elasticbeanstalk-ec2-role",
       "role" = module.Role.rolename["aws-elasticbeanstalk-ec2-role"]
     }
   }
