@@ -33,4 +33,8 @@ resource "aws_elastic_beanstalk_environment" "AllEnvs" {
       value     = setting.value.value
     }
   }
+
+  lifecycle {
+    ignore_changes = [setting]
+  }
 }
