@@ -24,12 +24,12 @@ EOF
     "ServiceRole" = {
       "namespace" = "aws:elasticbeanstalk:environment"
       "name"      = "ServiceRole"
-      "value"     = "aws-elasticbeanstalk-service-role"
+      "value"     = "arn:aws:iam::651778762109:role/service-role/aws-elasticbeanstalk-service-role"
     },
     "IamInstanceProfile" = {
       "namespace" = "aws:autoscaling:launchconfiguration"
       "name"      = "IamInstanceProfile"
-      "value"     = module.Role.rolename["aws-elasticbeanstalk-ec2-role"]
+      "value"     = module.InstanceProfile.instanceprofilearn["aws-elasticbeanstalk-ec2-role"]
     },
     "Tier" = {
       "namespace" = "aws:elasticbeanstalk:environment:Process:default"
