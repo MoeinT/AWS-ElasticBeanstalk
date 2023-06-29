@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="600" height="170" src=./assets/AWSDocker.jpg>
+  <img width="400" height="170" src=./assets/AWSDocker.jpg>
 </p>
 # Docker and AWS Elastic Beanstalk Documentation
 This documentation provides an overview of the project and highlights important aspects related to Docker, AWS Elastic Beanstalk, CI/CD pipeline, and Infrastructure as Code using Terraform. It also outlines the steps involved in setting up and deploying a React application.
