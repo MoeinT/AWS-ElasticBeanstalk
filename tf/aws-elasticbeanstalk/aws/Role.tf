@@ -5,7 +5,11 @@ module "Role" {
   roles = {
     aws-elasticbeanstalk-ec2-role = {
       "name"               = "aws-elasticbeanstalk-ec2-role",
-      "assume_role_policy" = local.assume_elasticbeanstalkrole_policy
+      "assume_role_policy" = local.assume_ebs_ec2_role_policy
+    },
+    aws-elasticbeanstalk-service-role = {
+      "name"               = "aws-elasticbeanstalk-service-role",
+      "assume_role_policy" = local.assume_ebs_servicerole_policy
     }
   }
 }
@@ -42,6 +46,18 @@ module "RolePolicy" {
     "WebTier" = {
       "role"       = module.Role.rolename["aws-elasticbeanstalk-ec2-role"],
       "policy_arn" = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+    },
+    "EBManagedUpdate" = {
+      "role"       = module.Role.rolename["aws-elasticbeanstalk-service-role"],
+      "policy_arn" = "arn:aws:iam::aws:policy/AWSElasticBeanstalkManagedUpdatesCustomerRolePolicy"
+    },
+    "EBAdminRole" = {
+      "role"       = module.Role.rolename["aws-elasticbeanstalk-service-role"],
+      "policy_arn" = "arn:aws:iam::aws:policy/AdministratorAccess-AWSElasticBeanstalk"
+    },
+    "EBHealth" = {
+      "role"       = module.Role.rolename["aws-elasticbeanstalk-service-role"],
+      "policy_arn" = "arn:aws:iam::aws:policy/service-role/AWSElasticBeanstalkEnhancedHealth"
     }
   }
 }

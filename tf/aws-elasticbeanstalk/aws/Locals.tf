@@ -4,7 +4,7 @@ locals {
     "secret_key" : var.secret_key
   }
 
-  assume_elasticbeanstalkrole_policy = <<EOF
+  assume_ebs_ec2_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -20,11 +20,26 @@ locals {
 }
 EOF
 
+  assume_ebs_servicerole_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Effect": "Allow",
+          "Principal": {
+              "Service": "elasticbeanstalk.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+      }
+  ]
+}
+EOF
+
   ebsSettings = {
     "ServiceRole" = {
       "namespace" = "aws:elasticbeanstalk:environment"
       "name"      = "ServiceRole"
-      "value"     = "arn:aws:iam::651778762109:role/service-role/aws-elasticbeanstalk-service-role"
+      "value"     = module.Role.rolearn["aws-elasticbeanstalk-service-role"]
     },
     "IamInstanceProfile" = {
       "namespace" = "aws:autoscaling:launchconfiguration"
@@ -32,9 +47,9 @@ EOF
       "value"     = module.InstanceProfile.instanceprofilearn["aws-elasticbeanstalk-ec2-role"]
     },
     "Tier" = {
-      "namespace" = "aws:elasticbeanstalk:environment:Process:default"
-      "name"      = "Tier"
-      "value"     = "Standard"
+      "namespace" = "aws:elasticbeanstalk:environment"
+      "name"      = "EnvironmentType"
+      "value"     = "SingleInstance"
     }
   }
 }
