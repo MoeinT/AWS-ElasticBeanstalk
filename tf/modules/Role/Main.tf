@@ -27,4 +27,8 @@ resource "aws_iam_role" "AllRoles" {
   tags = {
     tag-key = each.key
   }
+
+  lifecycle {
+    ignore_changes = [role_last_used.0.last_used_date]
+  }
 }
