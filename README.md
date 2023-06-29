@@ -64,9 +64,8 @@ Deployment of the above infrastructure is achieved through a CI/CD pipeline. The
 This documentation provides an overview of the project's objectives, the CI/CD pipeline for React application deployment, and the use of Infrastructure as Code with Terraform for managing AWS Elastic Beanstalk infrastructure. Below we can see a schematic representation of the whole end-to-end deployments for both the source code and the required infrastructure in AWS: 
 
 <p align="center">
-  <img width="500" height="250" src=./assets/OverallWorkflow.png>
+  <img width="550" height="300" src=./assets/OverallWorkflow.png>
 </p>
-
 
 ## Contact 
 - moin.torabi@gmail.com
