@@ -1,3 +1,5 @@
+![Image Description](./assets/AWSDocker.jpg)
+
 # Docker and AWS Elastic Beanstalk Documentation
 This documentation provides an overview of the project and highlights important aspects related to Docker, AWS Elastic Beanstalk, CI/CD pipeline, and Infrastructure as Code using Terraform. It also outlines the steps involved in setting up and deploying a React application.
 
@@ -31,6 +33,8 @@ Step 3: Once the above steps are successfully completed, deploying the productio
 
 The CI/CD workflow executes only when a pull request is merged into the main branch.
 
+See all the above steps under ```.github/workflows/docker-deploy.yaml```. 
+
 ## Infrastructure as Code with Terraform
 This project emphasizes Infrastructure as Code principles, leveraging Terraform to provision and manage the required infrastructure for deploying source code into AWS Elastic Beanstalk. The following resources have been created using Terraform:
 
@@ -47,12 +51,12 @@ This project emphasizes Infrastructure as Code principles, leveraging Terraform 
  - AdministratorAccess-AWSElasticBeanstalk
  - AWSElasticBeanstalkEnhancedHealth
 
-3. Elastic Beanstalk Application and Environment: An Elastic Beanstalk Application and an Elastic Beanstalk Environment have been created. The roles created in Step 1 and Step 2 have been assigned to the environment. All these dependencies have been properly managed with Terraform. 
+3. **Elastic Beanstalk Application and Environment:** An Elastic Beanstalk Application and an Elastic Beanstalk Environment have been created. The roles created in Step 1 and Step 2 have been assigned to the environment. All these dependencies have been properly managed with Terraform. 
 
 Deployment of the above infrastructure is achieved through a CI/CD pipeline. The deployment process consists of two steps:
 
- - When pushing to the feat/dockerActions branch, a Terraform plan is executed. This step allows reviewing the plan before actual deployment.
- - Upon a pull request to the main branch, a Terraform apply is triggered to deploy the infrastructure. Successful deployments can be merged into the main branch.
+ - When pushing to the feat/dockerActions branch, a Terraform plan is executed. This step allows reviewing the plan before the actual deployment. See the workflow on ```.github/workflows/tf-pipeline-check-staging.yaml```.
+ - Upon a pull request to the main branch, a Terraform apply is triggered to deploy the infrastructure. Successful deployments can be merged into the main branch. See this workflow ```.github/workflows/tf-pipeline-deploy-staging.yml```.
 
 ## Conclusion
 This documentation provides an overview of the project's objectives, the CI/CD pipeline for React application deployment, and the use of Infrastructure as Code with Terraform for managing AWS Elastic Beanstalk infrastructure. This is an example on how we can managed an end-to-end application deployment project in AWS using software engineering best practices. 
