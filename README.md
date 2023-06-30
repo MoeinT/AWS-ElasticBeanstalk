@@ -2,7 +2,7 @@
   <img width="400" height="170" src=./assets/AWSDocker.jpg>
 </p>
 
-# Docker and AWS Elastic Beanstalk Documentation
+# Docker and AWS Elastic Beanstalk
 This documentation provides an overview of the project and highlights important aspects related to Docker, AWS Elastic Beanstalk, CI/CD pipeline, and Infrastructure as Code with Terraform. It also outlines the steps involved in setting up and deploying a React application.
 
 ## Project Objective
