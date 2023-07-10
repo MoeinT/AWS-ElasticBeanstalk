@@ -41,14 +41,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: eu-west-3
 
-      - name: Deploy to AWS Elastic Beanstalk
-        uses: aws-actions/elastic-beanstalk-deploy@v1
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v19
         with:
+          aws-region: eu-west-3
           application-name: docker-react-tf
           environment-name: docker-react-tf-env
           version-label: ${{ github.sha }}
           package: ${{ secrets.DOCKER_USERNAME }}/react-prod:first-ctr
-
 
 # Add a step for EBS to download the image and deploy it.
 
