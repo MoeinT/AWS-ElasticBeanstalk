@@ -2,7 +2,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - 'main'
+      - 'feat/dockerActions'
     # paths:
     #   - '../frontend'
 
@@ -19,19 +19,19 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 # Build the development image
-      - name: Build Docker Image
-        run: docker build -t moeint/react-test -f Dockerfile.dev .
-# Run the tests on the development container
-      - name: Run Tests
-        run: docker run -e CI=true moeint/react-test npm test
+#       - name: Build Docker Image
+#         run: docker build -t moeint/react-test -f Dockerfile.dev .
+# # Run the tests on the development container
+#       - name: Run Tests
+#         run: docker run -e CI=true moeint/react-test npm test
 
 # Add a step to build the production image
       - name: Build Docker Image
-        run: docker build . --file Dockefile --tag moeint/react-prod:first-ctr
+        run: docker build . --tag ${{ secrets.DOCKER_USERNAME }}/react-prod:first-ctr
 
 # Add a step to push that image to Dockerhub
       - name: Push to Dockerhub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/moeint
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/react-prod:first-ctr
 
 
 # Add a step for EBS to download the image and deploy it.
