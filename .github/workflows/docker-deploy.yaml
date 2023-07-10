@@ -33,39 +33,17 @@ jobs:
       - name: Push to Dockerhub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/react-prod:first-ctr
 
-      # Deploy to AWS
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: eu-west-3
+      - name: Generate deployment package
+        run: zip -r deploy.zip ./ -x '*.git*'
 
-      - name: Deploy to Elastic Beanstalk
-        uses: einaregilsson/beanstalk-deploy@v19
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v18
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          region: eu-west-3
           application_name: docker-react-tf
           environment_name: docker-react-tf-env
+          existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
+          region: eu-west-3
           version_label: ${{ github.sha }}
-          deployment_package: ${{ secrets.DOCKER_USERNAME }}/react-prod:first-ctr
-
-# Add a step for EBS to download the image and deploy it.
-
-      # - name: Generate deployment package
-      #   run: zip -r deploy.zip ./ -x '*.git*'
-
-
-      # - name: Deploy to EB
-      #   uses: einaregilsson/beanstalk-deploy@v18
-      #   with:
-      #     aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-      #     aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-      #     application_name: docker-react-tf
-      #     environment_name: docker-react-tf-env
-      #     existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
-      #     region: eu-west-3
-      #     version_label: ${{ github.sha }}
-      #     deployment_package: ./frontend/deploy.zip
+          deployment_package: ./frontend/deploy.zip
