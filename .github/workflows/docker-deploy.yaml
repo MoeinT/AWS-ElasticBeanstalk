@@ -27,7 +27,7 @@ jobs:
 
 # Add a step to build the production image
       - name: Build Docker Image
-        run: docker build -t moeint/react-prod:first-ctr .
+        run: docker build . --file Dockefile --tag moeint/react-prod:first-ctr
 
 # Add a step to push that image to Dockerhub
       - name: Push to Dockerhub
