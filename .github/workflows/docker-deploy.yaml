@@ -31,7 +31,7 @@ jobs:
 
 # Add a step to push that image to Dockerhub
       - name: Push to Dockerhub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/moeint
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/moeint:react-prod:first-ctr
 
 
 # Add a step for EBS to download the image and deploy it.
