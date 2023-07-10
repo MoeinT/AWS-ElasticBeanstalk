@@ -1,5 +1,5 @@
 # EBS application
-module "ebsApp" {
+/* module "ebsApp" {
   source = "../../modules/ElasticBeanstalkApp"
   auth   = local.auth
   ebsApps = {
@@ -8,9 +8,9 @@ module "ebsApp" {
       "description" = "An Application for an Elastic Beanstalk Environment"
     }
   }
-}
+} */
 
-module "ebsEnv" {
+/* module "ebsEnv" {
   source = "../../modules/ElasticBeanstalkEnv"
   auth   = local.auth
   ebsEnvs = {
@@ -22,4 +22,4 @@ module "ebsEnv" {
       "allSettings"         = local.ebsSettings
     }
   }
-}
+} */
