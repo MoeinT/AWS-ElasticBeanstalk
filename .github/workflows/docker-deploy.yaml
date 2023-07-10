@@ -15,28 +15,39 @@ jobs:
         working-directory: ./frontend
     steps:
       - uses: actions/checkout@v3
-      
+# Login to Dockerhub
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
+# Build the development image
       - name: Build Docker Image
         run: docker build -t moeint/react-test -f Dockerfile.dev .
-
+# Run the tests on the development container
       - name: Run Tests
         run: docker run -e CI=true moeint/react-test npm test
 
-      - name: Generate deployment package
-        run: zip -r deploy.zip ./ -x '*.git*'
+# Add a step to build the production image
+      - name: Build Docker Image
+        run: docker build -t moeint/react-prod:first-ctr .
+
+# Add a step to push that image to Dockerhub
+      - name: Push to Dockerhub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/moeint
 
 
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v18
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          application_name: docker-react-tf
-          environment_name: docker-react-tf-env
-          existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
-          region: eu-west-3
-          version_label: ${{ github.sha }}
-          deployment_package: ./frontend/deploy.zip
+# Add a step for EBS to download the image and deploy it.
+
+      # - name: Generate deployment package
+      #   run: zip -r deploy.zip ./ -x '*.git*'
+
+
+      # - name: Deploy to EB
+      #   uses: einaregilsson/beanstalk-deploy@v18
+      #   with:
+      #     aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+      #     aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+      #     application_name: docker-react-tf
+      #     environment_name: docker-react-tf-env
+      #     existing_bucket_name: elasticbeanstalk-eu-west-3-651778762109
+      #     region: eu-west-3
+      #     version_label: ${{ github.sha }}
+      #     deployment_package: ./frontend/deploy.zip
