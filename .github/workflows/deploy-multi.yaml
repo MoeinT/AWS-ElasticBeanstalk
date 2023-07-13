@@ -32,18 +32,18 @@ jobs:
 
       - name: Build nginx prod Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/nginx-prod:first-ctr ./nginx
-      - name: Push client prod to Dockerhub
-        run: docker push -t ${{ secrets.DOCKER_USERNAME }}/nginx-prod:first-ctr
+      - name: Push nginx prod to Dockerhub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/nginx-prod:first-ctr
 
       - name: Build server prod Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/server-prod:first-ctr ./server
-      - name: Push client prod to Dockerhub
-        run: docker push -t ${{ secrets.DOCKER_USERNAME }}/server-prod:first-ctr
+      - name: Push server prod to Dockerhub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/server-prod:first-ctr
 
-      - name: Build server prod Image
+      - name: Build worker prod Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/worker-prod:first-ctr ./worker
       - name: Push worker prod to Dockerhub
-        run: docker push -t ${{ secrets.DOCKER_USERNAME }}/worker-prod:first-ctr
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/worker-prod:first-ctr
 
 
       # - name: Generate deployment package
